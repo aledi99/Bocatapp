@@ -78,10 +78,10 @@ public class Usuario implements UserDetails {
 	@Builder.Default
 	private LocalDateTime lastPasswordChangedAt = LocalDateTime.now();
 	
-	@Override
+	/*@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream().map(x->new SimpleGrantedAuthority(x.getDescripcion())).collect(Collectors.toList());
-	}
+	}*/
 	
 	@Override
 	public String getPassword() {
@@ -111,6 +111,12 @@ public class Usuario implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
