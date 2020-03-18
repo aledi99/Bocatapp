@@ -51,6 +51,7 @@ public abstract class Usuario implements UserDetails {
 	private String apellidos;
 	private Integer edad;
 	private boolean validado;
+	private String telfContacto;
 	@NotEmpty
 	@Email
 	private String email;
