@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.salesianostriana.dam.model.Avatar.AvatarBuilder;
 
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor
 @AllArgsConstructor
 @Entity@Builder
+@Table(name = "ubicacion")
 public class Ubicacion {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

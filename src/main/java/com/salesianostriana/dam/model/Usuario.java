@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -14,9 +13,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -39,10 +38,9 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @EntityListeners(AuditingEntityListener.class)
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class Usuario implements UserDetails {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Usuario implements UserDetails {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,15 +66,14 @@ public class Usuario implements UserDetails {
 	@OneToOne
 	private Avatar avatar;
 	
+	//private Pedido pedidos;
+	
 	@NotNull
     @ElementCollection(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 	
 	@CreatedDate
 	private Date fechaCreacion;
-	
-	@Builder.Default
-	private LocalDateTime lastPasswordChangedAt = LocalDateTime.now();
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
