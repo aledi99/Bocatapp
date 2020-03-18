@@ -67,12 +67,8 @@ public abstract class Usuario implements UserDetails {
 	@OneToOne
 	private Avatar avatar;
 	
-	//private Pedido pedidos;
-	
-	@NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
-	private Set<Role> roles;
-	
+	private String rol;
+		
 	@CreatedDate
 	private Date fechaCreacion;
 	

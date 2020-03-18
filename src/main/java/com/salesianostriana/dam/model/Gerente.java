@@ -22,7 +22,6 @@ public class Gerente extends Usuario {
 	
 	private long idGerente;
 	//private Establecimiento local;
-	private String telfContacto;
 	private boolean validado;
 	
 	@Builder.Default
