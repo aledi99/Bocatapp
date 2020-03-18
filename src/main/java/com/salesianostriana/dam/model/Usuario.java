@@ -50,8 +50,6 @@ public abstract class Usuario implements UserDetails {
 	private String username;
 	private String apellidos;
 	private Integer edad;
-	private boolean validado;
-	private String telfContacto;
 	@NotEmpty
 	@Email
 	private String email;
@@ -67,8 +65,10 @@ public abstract class Usuario implements UserDetails {
 	@OneToOne
 	private Avatar avatar;
 	
-	private String rol;
-		
+	@NotNull
+    @ElementCollection(fetch = FetchType.EAGER)
+	private Set<Role> roles;
+	
 	@CreatedDate
 	private Date fechaCreacion;
 	

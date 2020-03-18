@@ -15,7 +15,6 @@ public class BocatappApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BocatappApplication.class, args);
 	}
-	/*
 	@Bean
 	public CommandLineRunner init(ApplicationContext context, UsuarioService usuarioService,
 			BCryptPasswordEncoder encriptar) {
@@ -26,7 +25,7 @@ public class BocatappApplication {
 
 			});
 		};
-	}*/
+	}
 
 
 }
