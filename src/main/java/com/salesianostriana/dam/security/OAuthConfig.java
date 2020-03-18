@@ -22,14 +22,15 @@ import lombok.RequiredArgsConstructor;
 @EnableAuthorizationServer
 @RequiredArgsConstructor
 public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
-	
+
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
-	private final UserDetailsService userService;
-	private final DataSource dataSource;
+	//private final UsuarioServicio usuarioServicio;
+	private final UserDetailsService userDetailsService;
+
 	
 	//La anotación Value se usa para inyectar valores en campos de un bean
-	@Value("${jwt.clientId:Cuadro-mando-integral-grupo-2}")
+	@Value("${jwt.clientId:bocatapp-rule-5}")
 	private String clientId;
 	
 	@Value("${jwt.client-secret:secret}")
@@ -52,7 +53,7 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		//uso de almacenamiento en memoria. La otra alternativa en JDBC
-		clients.jdbc(dataSource)
+		clients.inMemory()
                .withClient(clientId) //autenticación con clientID y clientsecret
                .secret(passwordEncoder.encode(clientSecret))
                .accessTokenValiditySeconds(accessTokenValiditySeconds) //validar token
@@ -67,7 +68,7 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
 	 public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
 		 endpoints
                .accessTokenConverter(accessTokenConverter())//usp de JSON WEB TOKEN
-               .userDetailsService(userService) 
+               .userDetailsService(userDetailsService) 
                .authenticationManager(authenticationManager);
 		 //usamos UserDetailsService y autenticationManager para hacer la autentificación
 	 }
@@ -78,4 +79,6 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
        return converter;
 	 }
 
+
+	
 }

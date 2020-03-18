@@ -17,21 +17,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.salesianostriana.dam.error.CustomAccessDeniedHandler;
 import com.salesianostriana.dam.error.CustomAuthenticationEntryPoint;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Configuration
 @EnableWebSecurity
-//Esta anotación permite especificar la seguridad a nivel de clase o método. (preauthorize postauthorize)
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
+@RequiredArgsConstructor
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
-	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
+	
+	
 	private final UserDetailsService userDetailsService;
 
-	public ServerSecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-			@Qualifier("usuarioServicio") UserDetailsService userDetailsService) {
-		this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-		this.userDetailsService = userDetailsService;
-	}
 
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
@@ -52,18 +49,5 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-        //http.csrf().disable();
-        http.headers().frameOptions().disable();
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/h2-console/**").permitAll()
-				.antMatchers("/api/**").authenticated().anyRequest()
-				.authenticated()
-				.and().exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint)
-				.accessDeniedHandler(new CustomAccessDeniedHandler());
-		
-		// esta úlima línea es para gestionar errores propios
-	}
-
+	
 }

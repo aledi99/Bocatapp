@@ -59,6 +59,7 @@ public class Usuario implements UserDetails {
 	@JsonIgnore
     @ToString.Exclude
 	private String password;
+	
 	private long[] favoritos;
 	
 	@OneToOne
