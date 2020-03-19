@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,12 +16,16 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor
 @AllArgsConstructor
 @Entity@Builder
-@Table(name = "ubicacion")
-public class Ubicacion {
+@Table(name = "ingrediente")
+public class Ingrediente {
+	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private double latitud;
-	private double longitud;
+	private String nombre;
+	private int cantidad;
+	private String especial;
+	private double peso;
+
 }

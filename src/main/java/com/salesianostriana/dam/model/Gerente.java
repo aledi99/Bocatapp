@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import com.salesianostriana.dam.model.Admin.AdminBuilder;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +27,6 @@ public class Gerente extends Usuario {
 	@Builder.Default
 	private LocalDateTime lastPasswordChangedAt = LocalDateTime.now();
 
+	@OneToOne(fetch = FetchType.EAGER)
+	private Establecimiento establecimiento;
 }

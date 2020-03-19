@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.salesianostriana.dam.model.Admin.AdminBuilder;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
