@@ -7,7 +7,9 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.dam.dto.CreateClienteDto;
 import com.salesianostriana.dam.dto.CreateUserDto;
+import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Role;
 import com.salesianostriana.dam.model.Usuario;
 import com.salesianostriana.dam.repository.UsuarioRepository;
@@ -24,25 +26,18 @@ public class UsuarioService extends BaseService<Usuario, Long, UsuarioRepository
 		return this.repositorio.findFirstByEmail(email);
 	}
 	
-	public Usuario newUser(CreateUserDto createUserDto) {
+	public Cliente newUser(CreateClienteDto createClienteDto) {
 		
-		String[] roles = createUserDto.getRoles().split(" ,");
+	
 		
-		Set<Role> setroles = new HashSet<Role>();
-		
-		for( String s: roles) {
-			Role rol = Enum.valueOf(Role.class, s);
-			setroles.add(rol);
-		}
-		
-		Usuario newUser = Usuario.builder()
-								.username(createUserDto.getUsername())
-								.email(createUserDto.getEmail())
+		Cliente newCliente = Cliente.builder()
+								.username(createClienteDto.getUsername())
+								.email(createClienteDto.getEmail())
 								.password(security.passwordEncoder().encode(createUserDto.getPassword()))
 								.roles(setroles)
 								.build();
 		
-		return this.repositorio.save(newUser);
+		return this.repositorio.save(newCliente);
 	}
 
 }
