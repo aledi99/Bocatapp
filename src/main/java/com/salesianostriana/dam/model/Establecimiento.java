@@ -27,6 +27,8 @@ public class Establecimiento {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	private String nombre;
+	private String descripcion;
 	private double presupuesto;
 	private boolean abierto;
 	private float valoracion;

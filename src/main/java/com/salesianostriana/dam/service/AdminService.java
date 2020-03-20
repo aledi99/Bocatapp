@@ -7,11 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.dto.CreateAdminDto;
 import com.salesianostriana.dam.model.Admin;
+import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Role;
 import com.salesianostriana.dam.repository.AdminRepository;
 
 @Service
 public class AdminService extends BaseService<Admin,Long,AdminRepository>{
+	
+	public Admin findFirstByEmail(String email) {
+		return this.repositorio.findFirstByEmail(email);
+	}
 	
 	public Admin newAdmin(CreateAdminDto createAdminDto) {
 		

@@ -45,6 +45,10 @@ public class Gerente extends Usuario {
 		this.validado = validado;
 	}
 	
+	public Gerente() {
+		super();
+	}
+	
 	
 	
 

@@ -6,12 +6,17 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.dto.CreateGerenteDto;
+import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Role;
 import com.salesianostriana.dam.repository.GerenteRepository;
 
 @Service
 public class GerenteService extends BaseService<Gerente,Long,GerenteRepository> {
+	
+	public Gerente findFirstByEmail(String email) {
+		return this.repositorio.findFirstByEmail(email);
+	}
 	
 	public Gerente newGerente(CreateGerenteDto createGerenteDto) {
 		

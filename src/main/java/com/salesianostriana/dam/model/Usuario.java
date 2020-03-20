@@ -84,10 +84,10 @@ public abstract class Usuario implements UserDetails {
 	@Builder.Default
 	private LocalDateTime lastPasswordChangedAt = LocalDateTime.now();
 	
-	/*@Override
+	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream().map(x->new SimpleGrantedAuthority(x.getDescripcion())).collect(Collectors.toList());
-	}*/
+	}
 	
 	
 	
@@ -96,7 +96,9 @@ public abstract class Usuario implements UserDetails {
 		return password;
 	}
 	
-		
+	public Usuario() {
+
+	}
 	
 	public Usuario(Long id, String nombre, String username, String apellidos, Integer edad, String email,
 			String password, long[] favoritos, Ubicacion localizacion, Avatar avatar, Set<Role> roles,
@@ -145,11 +147,6 @@ public abstract class Usuario implements UserDetails {
 		return true;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 
 }

@@ -7,7 +7,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.salesianostriana.dam.service.AdminService;
 import com.salesianostriana.dam.service.ClienteService;
+import com.salesianostriana.dam.service.GerenteService;
 
 @SpringBootApplication
 public class BocatappApplication {
@@ -16,15 +18,24 @@ public class BocatappApplication {
 		SpringApplication.run(BocatappApplication.class, args);
 	}
 	@Bean
-	public CommandLineRunner init(ApplicationContext context, ClienteService clienteService,
+	public CommandLineRunner init(ApplicationContext context, ClienteService clienteService, AdminService adminService, GerenteService gerenteService,
 			BCryptPasswordEncoder encriptar) {
 		return args -> {
-			clienteService.findAll().stream().forEach(x -> {
+			adminService.findAll().stream().forEach(x -> {
 				x.setPassword(encriptar.encode(x.getPassword()));
-				clienteService.save(x);
+				adminService.save(x);
 
 			});
+			
+			gerenteService.findAll().stream().forEach(x -> {
+				x.setPassword(encriptar.encode(x.getPassword()));
+				gerenteService.save(x);
+
+			});
+
 		};
+		
+		
 	}
 
 
