@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.dto.CategoriaDto;
+import com.salesianostriana.dam.dto.CategoriaDtoName;
 import com.salesianostriana.dam.model.Categoria;
 import com.salesianostriana.dam.service.CategoriaService;
 import com.salesianostriana.dam.service.EstablecimientoService;
@@ -24,6 +25,12 @@ public class ConversorCategoria {
 	public CategoriaDto categoriaToCategoriaDto(Categoria categoria) {
 		return CategoriaDto.builder()
 				.id(categoria.getId())
+				.nombre(categoria.getNombre())
+				.build();
+	}
+	
+	public CategoriaDtoName categoriaToCategoriaDtoName(Categoria categoria) {
+		return CategoriaDtoName.builder()
 				.nombre(categoria.getNombre())
 				.build();
 	}
