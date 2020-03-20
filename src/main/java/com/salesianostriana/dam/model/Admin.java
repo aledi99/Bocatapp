@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("A")
 public class Admin extends Usuario {
 	
-	private long idAdmin;
+	private Long idAdmin;
 	
 	
 	@Builder.Default

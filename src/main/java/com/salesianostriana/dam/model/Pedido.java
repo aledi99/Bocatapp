@@ -27,15 +27,14 @@ public class Pedido {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	private long idEstablecimiento;
 	private LocalTime horaPedido;
 	private LocalDate fechaPedido;
 	private double total;
-	
-	@OneToOne
-	private Horario horaRecogida;
+	private boolean preparado;
+	private boolean entregado;
 	
 	@OneToOne
 	private Pago formaPago;

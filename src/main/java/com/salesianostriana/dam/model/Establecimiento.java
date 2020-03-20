@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.model;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.salesianostriana.dam.model.Ubicacion.UbicacionBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,22 +25,22 @@ public class Establecimiento {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	private double presupuesto;
+	private boolean abierto;
 	private float valoracion;
+	private LocalTime horaApertura;
+	private LocalTime horaCierre;
 	
 	@OneToOne
 	private Gerente gerente;
 	
 	@OneToMany
-	private List<Carta> cartas;
+	private List<Producto> producto;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private Ubicacion localizacion;
-	
-	@OneToMany
-	private List<Horario> horarios;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Pago> pagos;
@@ -52,8 +51,8 @@ public class Establecimiento {
 	@OneToOne
 	private Categoria categoria;
 	
-	@OneToMany
-	private List<Imagen> imagenes;
+	@OneToOne
+	private Imagen imagen;
 	
 
 }

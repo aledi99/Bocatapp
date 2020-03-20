@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Ubicacion {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	private double latitud;
 	private double longitud;

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("B")
 public class Gerente extends Usuario {
 	
-	private long idGerente;
+	private Long idGerente;
 	//private Establecimiento local;
 	private boolean validado;
 	

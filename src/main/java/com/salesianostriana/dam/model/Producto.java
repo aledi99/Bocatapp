@@ -25,20 +25,20 @@ public class Producto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	private String nombre;
 	private double precio;
-	private int cantidad;
+	private boolean activo;
+	private boolean gluten;
+	private boolean lactosa;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Establecimiento establecimiento;
 	
 	@OneToOne
 	private Imagen imagen;
-	
-	@OneToMany(fetch = FetchType.EAGER)
-	private List<Ingrediente> ingredientes;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Carta carta;
+
 	
 
 }

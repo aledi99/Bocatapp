@@ -20,7 +20,7 @@ public class Categoria {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	private String nombre;
 	

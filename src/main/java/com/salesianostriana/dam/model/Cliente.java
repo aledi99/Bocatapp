@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("C")
 public class Cliente extends Usuario {
 	
-	private long idCliente;
+	private Long idCliente;
 	private boolean validado;
 	
 	

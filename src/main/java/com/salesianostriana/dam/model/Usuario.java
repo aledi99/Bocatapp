@@ -66,12 +66,6 @@ public abstract class Usuario implements UserDetails {
 	@OneToOne
 	private Avatar avatar;
 	
-	@OneToMany
-	private List<Comentario> comentarios;
-	
-	@OneToMany(fetch = FetchType.EAGER)
-	private List<Pregunta> preguntas;
-	
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Pedido> pedidos;
 	
