@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.model;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -32,27 +34,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@Data
+
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+
 public abstract class Usuario implements UserDetails {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String nombre;
 	private String username;
 	private String apellidos;
 	private Integer edad;
-	@NotEmpty
-	@Email
+	
+	
 	private String email;
 	@JsonIgnore
     @ToString.Exclude
@@ -65,7 +70,7 @@ public abstract class Usuario implements UserDetails {
 	
 	@OneToOne
 	private Avatar avatar;
-	
+
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Pedido> pedidos;
 	
@@ -76,15 +81,44 @@ public abstract class Usuario implements UserDetails {
 	@CreatedDate
 	private Date fechaCreacion;
 	
-	@Override
+	@Builder.Default
+	private LocalDateTime lastPasswordChangedAt = LocalDateTime.now();
+	
+	/*@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream().map(x->new SimpleGrantedAuthority(x.getDescripcion())).collect(Collectors.toList());
-	}
+	}*/
+	
+	
 	
 	@Override
 	public String getPassword() {
 		return password;
 	}
+	
+		
+	
+	public Usuario(Long id, String nombre, String username, String apellidos, Integer edad, String email,
+			String password, long[] favoritos, Ubicacion localizacion, Avatar avatar, Set<Role> roles,
+			Date fechaCreacion,LocalDateTime lastPasswordChangedAt) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.username = username;
+		this.apellidos = apellidos;
+		this.edad = edad;
+		this.email = email;
+		this.password = password;
+		this.favoritos = favoritos;
+		this.localizacion = localizacion;
+		this.avatar = avatar;
+		this.roles = roles;
+		this.fechaCreacion = fechaCreacion;
+		this.lastPasswordChangedAt = lastPasswordChangedAt;
+	}
+
+
+
 
 	@Override
 	public String getUsername() {
@@ -109,6 +143,12 @@ public abstract class Usuario implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
