@@ -2,7 +2,10 @@ package com.salesianostriana.dam.dto.converter;
 
 import org.springframework.stereotype.Component;
 
+import com.salesianostriana.dam.dto.ClienteDto;
+import com.salesianostriana.dam.dto.CreateClienteDto;
 import com.salesianostriana.dam.dto.UserDto;
+import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Usuario;
 
 import lombok.RequiredArgsConstructor;
@@ -11,13 +14,12 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class UserDtoConverter {
 	
-	private static String rol;
 	
-	public UserDto convertUserEntityToUserDto(Usuario user) {
-		rol = "CLIENTE";
-		return UserDto.builder()
-				.username(user.getUsername())
-				.rol(rol)
+	public CreateClienteDto convertUserEntityToUserDto(Cliente cliente) {
+		return CreateClienteDto.builder()
+				.username(cliente.getUsername())
+				.email(cliente.getEmail())
+				.password(cliente.getPassword())
 				.build();
 	}
 }

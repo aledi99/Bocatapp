@@ -15,6 +15,7 @@ public class CreateClienteDto {
 	private String email;
 	private String username;
 	private String password;
-	private String roles;
-
+	private String nombre;
+	private String apellidos;
+	private int edad;
 }

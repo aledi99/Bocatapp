@@ -14,39 +14,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.salesianostriana.dam.dto.CreateClienteDto;
 import com.salesianostriana.dam.dto.CreateUserDto;
 import com.salesianostriana.dam.dto.converter.UserDtoConverter;
+import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Usuario;
-import com.salesianostriana.dam.service.UsuarioService;
+import com.salesianostriana.dam.service.ClienteService;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * Este Controller contiene todos los métodos que se usan para manejar la gestión de los usuarios
- * @author Alberto
- *
- */
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/client")
 @RequiredArgsConstructor
-public class UserController {
+public class ClienteController {
 	
-	private final UsuarioService usuarioService;
-	private final UserDtoConverter userDtoConverter;
+	private final ClienteService clienteService;
 
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody CreateUserDto createUserDto) {
+	public ResponseEntity<?> register(@RequestBody CreateClienteDto createClienteDto) {
 		
-		Usuario user = usuarioService.newUser(createUserDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userDtoConverter.convertUserEntityToUserDto(user));
+		Cliente user = clienteService.newCliente(createClienteDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 	}
 	
 
 	@GetMapping("/findByEmail")
 	public Usuario findByEmail(@RequestParam String email) {
 		
-		return usuarioService.findFirstByEmail(email);   
+		return clienteService.findFirstByEmail(email);   
         
         
     }

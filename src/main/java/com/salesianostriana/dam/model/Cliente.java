@@ -7,38 +7,51 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.salesianostriana.dam.model.Admin.AdminBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
+@Getter
+@Setter
 @DiscriminatorValue("C")
 public class Cliente extends Usuario {
 	
 	@GeneratedValue
 	private long idCliente;
-	private boolean validado;
+	private boolean validado;	
 	
 	
-	
-	
-	
-	
-	public Cliente(Long id, String nombre, String username, String apellidos, Integer edad, String email,
-			String password, long[] favoritos, Ubicacion localizacion, Avatar avatar, Set<Role> roles,
-			Date fechaCreacion, LocalDateTime lastPasswordChangedAt) {
-		super(id, nombre, username, apellidos, edad, email, password, favoritos, localizacion, avatar, roles, fechaCreacion,
-				lastPasswordChangedAt);
-		
+	@Builder
+	public Cliente(Long id, String nombre, String username, String apellidos, Integer edad,
+			  String email, String password, long[] favoritos, Ubicacion localizacion, Avatar avatar,
+			 Set<Role> roles, Date fechaCreacion, LocalDateTime lastPasswordChangedAt, long idCliente,
+			boolean validado) {
+		super(id, nombre, username, apellidos, edad, email, password, favoritos, localizacion, avatar, roles,
+				fechaCreacion, lastPasswordChangedAt);
+		this.idCliente = idCliente;
+		this.validado = validado;
 	}
+	
+
+
+
+
+
+
+
+
 
 
 

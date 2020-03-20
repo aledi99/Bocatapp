@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.model.Usuario;
-import com.salesianostriana.dam.service.UsuarioService;
+import com.salesianostriana.dam.service.ClienteService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private final UsuarioService usuarioServicio;
+	private final ClienteService usuarioServicio;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
