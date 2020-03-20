@@ -5,7 +5,11 @@ import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.dto.CategoriaDto;
 import com.salesianostriana.dam.dto.CategoriaDtoName;
+import com.salesianostriana.dam.dto.CreateCategoriaDto;
+import com.salesianostriana.dam.dto.CreateEstablecimientoDto;
 import com.salesianostriana.dam.model.Categoria;
+import com.salesianostriana.dam.model.Establecimiento;
+import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.service.CategoriaService;
 import com.salesianostriana.dam.service.EstablecimientoService;
 
@@ -34,5 +38,14 @@ public class ConversorCategoria {
 				.nombre(categoria.getNombre())
 				.build();
 	}
+	
+	public Categoria convertCategoriaDtotoCategoria(CreateCategoriaDto createCategoriaDto) {
+		return Categoria.builder()
+				.nombre(createCategoriaDto.getNombre())
+				.build();
+	}
+	
+	
+
 
 }
