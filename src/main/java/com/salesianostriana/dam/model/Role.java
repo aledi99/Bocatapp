@@ -1,7 +1,5 @@
 package com.salesianostriana.dam.model;
 
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

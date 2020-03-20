@@ -3,6 +3,7 @@ package com.salesianostriana.dam.model;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -69,7 +71,17 @@ public abstract class Usuario implements UserDetails {
 	@OneToOne
 	private Avatar avatar;
 	
+
+	@OneToMany
+	private List<Comentario> comentarios;
 	
+	@OneToMany(fetch = FetchType.EAGER)
+	private List<Pregunta> preguntas;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	private List<Pedido> pedidos;
+	
+	@NotNull
     @ElementCollection(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 	

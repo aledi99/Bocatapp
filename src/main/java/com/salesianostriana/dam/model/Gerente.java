@@ -12,7 +12,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.salesianostriana.dam.model.Admin.AdminBuilder;
-
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,4 +51,6 @@ public class Gerente extends Usuario {
 
 	
 
+	@OneToOne(fetch = FetchType.EAGER)
+	private Establecimiento establecimiento;
 }

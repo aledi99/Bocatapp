@@ -14,12 +14,13 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor
 @AllArgsConstructor
 @Entity@Builder
-@Table(name = "ubicacion")
-public class Ubicacion {
+@Table(name = "pago")
+public class Pago {
+	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private double latitud;
-	private double longitud;
+	private String nombre;
+
 }
