@@ -10,13 +10,13 @@ import com.salesianostriana.dam.service.ProductoService;
 @Component
 public class ConversorProducto {
 	
-	private static ProductoService productoService;
+	/*private static ProductoService productoService;
 	
 	@Autowired
 	public void setServicios(ProductoService productoService) {
 		ConversorProducto.productoService = productoService;
 
-	}
+	}*/
 	
 	
 	public ListaProductosDto converterListaProductoDto(Producto producto) {
