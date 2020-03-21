@@ -21,7 +21,11 @@ public class Imagen {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String url;
+	private String nombreFichero;
+	private String uriDescargaFichero;
+	private String tipoFichero;
+	private long tamanyo;
+
 	
 
 }

@@ -5,15 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salesianostriana.dam.conversor.ConversorCategoria;
-import com.salesianostriana.dam.conversor.ConversorEstablecimiento;
-import com.salesianostriana.dam.dto.CategoriaDtoName;
 import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.service.EstablecimientoService;
 
@@ -25,7 +21,7 @@ public class CategoriaController {
 	@Autowired
 	private ConversorCategoria converter;
 	
-	@GetMapping("/categorias")
+	@GetMapping("/categorias/")
 	public List<String> listarCatActivas() {
 		List<Establecimiento> locales = new ArrayList<>();
 		List<String> categorias = new ArrayList<>();

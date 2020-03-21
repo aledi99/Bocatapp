@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.sun.xml.bind.v2.model.core.ID;
-
 public class BaseService<T, ID, R extends JpaRepository<T, ID>> {
 
 	@Autowired

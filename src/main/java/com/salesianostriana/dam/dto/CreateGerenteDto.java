@@ -17,6 +17,8 @@ public class CreateGerenteDto {
 	private String password;
 	private String nombre;
 	private String apellidos;
+	private double telfContacto;
+	private int edad;
 	
 
 

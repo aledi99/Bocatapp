@@ -20,9 +20,13 @@ import lombok.NoArgsConstructor;
 public class Avatar {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String url;
+	private String nombreFichero;
+	private String uriDescargaFichero;
+	private String tipoFichero;
+	private long tamanyo;
+
 
 }

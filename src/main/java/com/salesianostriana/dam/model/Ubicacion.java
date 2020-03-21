@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "ubicacion")
 public class Ubicacion {
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private double latitud;

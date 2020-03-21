@@ -7,16 +7,10 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
@@ -45,17 +39,9 @@ public class Cliente extends Usuario {
 	}
 	
 
-
-
-
-
-
-
-
-
-
-
-
+	public Cliente() {
+		super();
+	}
 
 
 	@Builder.Default
