@@ -12,10 +12,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data @NoArgsConstructor
 @AllArgsConstructor
@@ -38,16 +41,22 @@ public class Establecimiento {
 	@OneToOne
 	private Gerente gerente;
 	
-	@OneToMany
+	@JsonBackReference
+	@ToString.Exclude
+	@OneToMany(mappedBy="establecimiento")
 	private List<Producto> producto;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private Ubicacion localizacion;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@JsonBackReference
+	@ToString.Exclude
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Pago> pagos;
 	
-	@OneToMany
+	@JsonBackReference
+	@ToString.Exclude
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "establecimiento")
 	private List<Pedido> pedidos;
 	
 	@OneToOne

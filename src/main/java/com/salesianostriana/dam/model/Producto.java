@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +32,8 @@ public class Producto {
 	private boolean gluten;
 	private boolean lactosa;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ToString.Exclude
+	@ManyToOne (fetch =FetchType.EAGER)
 	private Establecimiento establecimiento;
 	
 	@OneToOne
