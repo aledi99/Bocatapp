@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.dto;
 
+import com.salesianostriana.dam.dto.CreateProductoDto.CreateProductoDtoBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,16 +11,13 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class CreateAdminDto {
-	
-	private String email;
-	private String username;
-	private String password;
+public class ProductoDto {
+	private long id;
 	private String nombre;
-	private String apellidos;
-	private int edad;
-	
-	
-
+	private String descripcion;
+	private double precio;
+	private boolean activo;
+	private boolean glucosa;
+	private boolean lactosa;
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.salesianostriana.dam.model.Admin;
 import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Gerente;
-import com.salesianostriana.dam.model.Usuario;
 import com.salesianostriana.dam.service.AdminService;
 import com.salesianostriana.dam.service.ClienteService;
 import com.salesianostriana.dam.service.GerenteService;

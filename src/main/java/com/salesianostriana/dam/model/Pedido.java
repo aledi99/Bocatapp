@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data @NoArgsConstructor
 @AllArgsConstructor
@@ -42,6 +43,7 @@ public class Pedido {
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<LineaPedido> lineasPedido;
 	
+	@ToString.Exclude
 	@ManyToOne
 	private Establecimiento establecimiento;
 	

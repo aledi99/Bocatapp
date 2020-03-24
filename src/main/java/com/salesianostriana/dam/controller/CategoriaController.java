@@ -39,7 +39,7 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	@GetMapping("/categorias")
+	@GetMapping("/categorias/")
 	public List<String> listarCatActivas() {
 		List<Establecimiento> locales = new ArrayList<>();
 		List<String> categorias = new ArrayList<>();

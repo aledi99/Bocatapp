@@ -18,22 +18,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.salesianostriana.dam.conversor.ConversorEstablecimiento;
 import com.salesianostriana.dam.dto.CreateEstablecimientoDto;
 import com.salesianostriana.dam.dto.EditEstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
+import com.salesianostriana.dam.files.FileSystemStorageService;
 import com.salesianostriana.dam.model.Establecimiento;
+import com.salesianostriana.dam.model.Imagen;
+import com.salesianostriana.dam.service.AdminService;
+import com.salesianostriana.dam.service.AvatarService;
 import com.salesianostriana.dam.service.CategoriaService;
 import com.salesianostriana.dam.service.EstablecimientoService;
+import com.salesianostriana.dam.service.ImagenService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class EstablecimientoController {
 	@Autowired
 	private EstablecimientoService service;
 	@Autowired
-	private ConversorEstablecimiento converter;
+	private ConversorEstablecimiento converter;	
+	private final FileSystemStorageService fileStorageService;	
+	private final ImagenService imagenService;	
+	
 	
 	@GetMapping("/local/")
 	public List<ListaEstablecimientoDto> buscarLocal() {
@@ -79,15 +91,27 @@ public class EstablecimientoController {
 		
 	}
 	
-	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestParam("file") MultipartFile file, @RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("edad") int edad) {
-		
+
 	
 	@PostMapping("local/")
 	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestBody CreateEstablecimientoDto createEstablecimientoDto) {
 		String filename = fileStorageService.storeFile(file);
+		
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/downloadFile/")
+				.path(filename)
+				.toUriString();
+		
+		Imagen imagen = imagenService.save(Imagen.builder()
+											.nombreFichero(filename)
+											.uriDescargaFichero(fileDownloadUri)
+											.tipoFichero(file.getContentType())
+											.tamanyo(file.getSize())
+											.build());
+		
+		 
 	
-		Establecimiento e = service.save(converter.convertEstablecimientoDtoToEstablecimiento(createEstablecimientoDto));
+		Establecimiento e = service.newEstablecimiento(createEstablecimientoDto, imagen);
 		return new ResponseEntity<Establecimiento>(e, HttpStatus.CREATED);
 	}
 	

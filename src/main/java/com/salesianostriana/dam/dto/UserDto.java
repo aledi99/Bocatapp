@@ -1,9 +1,5 @@
 package com.salesianostriana.dam.dto;
 
-import java.util.Set;
-
-import com.salesianostriana.dam.model.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
