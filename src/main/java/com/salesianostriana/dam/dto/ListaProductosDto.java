@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.dto;
 
-import com.salesianostriana.dam.dto.ListaEstablecimientoDto.ListaEstablecimientoDtoBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

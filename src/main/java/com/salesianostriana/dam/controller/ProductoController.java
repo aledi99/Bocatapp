@@ -25,12 +25,11 @@ import com.salesianostriana.dam.service.ProductoService;
 @RequestMapping("/api")
 public class ProductoController {
 	
-	
+	@Autowired
 	private ProductoService service;
 	@Autowired
 	private ConversorProducto converter;
-	@Autowired
-	private ListaProductosDto listaProductosDto;
+
 
 	
 	@GetMapping("/productos/")

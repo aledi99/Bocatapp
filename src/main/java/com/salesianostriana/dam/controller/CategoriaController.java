@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.salesianostriana.dam.conversor.ConversorCategoria;
 import com.salesianostriana.dam.conversor.ConversorEstablecimiento;
+import com.salesianostriana.dam.dto.CategoriaDto;
 import com.salesianostriana.dam.dto.CategoriaDtoName;
 import com.salesianostriana.dam.dto.CreateCategoriaDto;
 import com.salesianostriana.dam.model.Categoria;
@@ -62,33 +64,38 @@ public class CategoriaController {
 	
 	@PostMapping("categoria/")
 	public ResponseEntity<?> nuevaCategoria(@RequestBody CreateCategoriaDto createCategoriaDto) {
-		Categoria p = categoriaService.save(converter.convertCategoriaDtotoCategoria(createCategoriaDto));
-		return new ResponseEntity<Categoria>(p, HttpStatus.CREATED);
+		Categoria c = categoriaService.save(converter.convertCategoriaDtotoCategoria(createCategoriaDto));
+		return new ResponseEntity<Categoria>(c, HttpStatus.CREATED);
 	}
 	
-	/*@PutMapping("categoria/{id}")
-	public ResponseEntity<?> editarCategoria (@PathVariable Optional<Long> id, @RequestBody Categoria categoria) {
+	@PutMapping("categoria/{id}")
+	public ResponseEntity<?> editarCategoria (@PathVariable Optional<Long> id, @RequestBody CategoriaDto categoriadto) {
 		Long theId = id.orElse(-1L);
-		return categoriaService.findById(theId).map(e -> {			
-			p.setNombre(producto.getNombre());
-			
-			
-			
-					
-			return ResponseEntity.ok(service.save(p));
-		}).orElse(ResponseEntity.notFound().build());
-	}*/
+		 if(categoriaService.findById(theId)!=null) {
+			 
+			 Categoria categoria = categoriaService.findById(theId);			 
+			 categoria.setNombre(categoriadto.getNombre());
+			 
+			 return new ResponseEntity<>(categoria, HttpStatus.CREATED);			
+			 
+		 }else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe esta categoría");
+		 }
+		
+	
+		
+	}
 	
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("categoria/{id}")
 	public ResponseEntity<?> deleteCategoria(@PathVariable Optional<Long> id) {
 		Long theId = id.orElse(-1L);
-		Establecimiento e = service.findById(theId);
+		Categoria c = categoriaService.findById(theId);
 		
-		if(e==null) {
+		if(c==null) {
 			return ResponseEntity.notFound().build();
 		}else {
-			service.delete(e);
+			categoriaService.delete(c);
 			return ResponseEntity.noContent().build();
 		}
 		
