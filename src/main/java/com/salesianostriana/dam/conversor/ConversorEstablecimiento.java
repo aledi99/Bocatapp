@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.dto.CategoriaDto;
+import com.salesianostriana.dam.dto.EstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
 import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.service.CategoriaService;
@@ -39,6 +40,18 @@ public class ConversorEstablecimiento {
 				.categoria(categoria)
 				.build();
 		
+	}
+	
+	public EstablecimientoDto establecimientoToEstablecimientoDto(Establecimiento establecimiento) {
+		return EstablecimientoDto.builder()
+				.id(establecimiento.getId())
+				.nombre(establecimiento.getNombre())
+				.descripcion(establecimiento.getDescripcion())
+				.abierto(establecimiento.isAbierto())
+				.valoracion(establecimiento.getValoracion())
+				.horaApertura(establecimiento.getHoraApertura())
+				.horaCierre(establecimiento.getHoraCierre())
+				.build();
 	}
 
 

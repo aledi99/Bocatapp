@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class FileController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);

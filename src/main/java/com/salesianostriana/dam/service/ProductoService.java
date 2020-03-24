@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.dto.CreateProductoDto;
 import com.salesianostriana.dam.model.Gerente;
+import com.salesianostriana.dam.model.Imagen;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.repository.ProductoRepository;
 
@@ -17,20 +18,20 @@ public class ProductoService extends BaseService<Producto, Long, ProductoReposit
 	
 	@Autowired
 	private EstablecimientoService estService;
-
-	private OAuth2Authentication oauth;
 	
-	public Producto newProducto(CreateProductoDto createProductoDto) {
-		String username = (String) oauth.getUserAuthentication().getPrincipal();
+	public Producto newProducto(CreateProductoDto createProductoDto, OAuth2Authentication oAuth, Imagen imagen) {
+		String username = (String) oAuth.getUserAuthentication().getPrincipal();
 		
 		Gerente gerente = gerService.findFirstByEmail(username);
 		
 		Producto producto = Producto.builder()
 				.nombre(createProductoDto.getNombre())
 				.descripcion(createProductoDto.getDescripcion())
+				.precio(createProductoDto.getPrecio())
 				.lactosa(createProductoDto.isLactosa())
 				.gluten(createProductoDto.isGlucosa())
 				.activo(true)
+				.imagen(imagen)
 				.establecimiento(estService.findById(gerente.getEstablecimiento().getId()))
 				.build();
 		

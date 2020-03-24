@@ -17,22 +17,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.salesianostriana.dam.conversor.ConversorProducto;
 import com.salesianostriana.dam.dto.CreateProductoDto;
 import com.salesianostriana.dam.dto.EditProductoDto;
 import com.salesianostriana.dam.dto.ProductoDto;
+import com.salesianostriana.dam.dto.ProductoDto2;
+import com.salesianostriana.dam.files.FileSystemStorageService;
+import com.salesianostriana.dam.model.Avatar;
 import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Gerente;
+import com.salesianostriana.dam.model.Imagen;
 import com.salesianostriana.dam.model.Producto;
+import com.salesianostriana.dam.service.AvatarService;
 import com.salesianostriana.dam.service.EstablecimientoService;
 import com.salesianostriana.dam.service.GerenteService;
+import com.salesianostriana.dam.service.ImagenService;
 import com.salesianostriana.dam.service.ProductoService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ProductoController {
 
 	@Autowired
@@ -40,9 +52,15 @@ public class ProductoController {
 
 	@Autowired
 	private ConversorProducto converter;
+	
+	@Autowired
+	private FileSystemStorageService fileStorageService;
 
 	@Autowired
 	private ProductoService service;
+	
+	@Autowired
+	private ImagenService imagenService;
 
 	@Autowired
 	private GerenteService gerService;
@@ -56,12 +74,12 @@ public class ProductoController {
 
 		if (gerService.findFirstByEmail(principal) != null) {
 			Gerente gerente = gerService.findFirstByEmail(principal);
-			List<ProductoDto> productoList = new ArrayList<>();
+			List<ProductoDto2> productoList = new ArrayList<>();
 
 			if (gerente.getEstablecimiento().getProducto() != null) {
 				for (int i = 0; i < gerente.getEstablecimiento().getProducto().size(); i++) {
 					productoList
-							.add(converter.productoToProductoDto(gerente.getEstablecimiento().getProducto().get(i)));
+							.add(converter.productoToProductoDto2(gerente.getEstablecimiento().getProducto().get(i)));
 
 				}
 			}
@@ -74,9 +92,25 @@ public class ProductoController {
 	}
 
 	@PostMapping("/producto/")
-	public ResponseEntity<?> newProducto(@RequestBody CreateProductoDto createDto, OAuth2Authentication oauth) {
-		Producto producto = service.newProducto(createDto);
-		return new ResponseEntity<>(producto, HttpStatus.CREATED);
+	public ResponseEntity<?> newProducto(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("precio") double precio,  @RequestParam("glucosa") boolean glucosa,  @RequestParam("lactosa") boolean lactosa, OAuth2Authentication oauth) {
+		String filename = fileStorageService.storeFile(file);
+		
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/downloadFile/")
+				.path(filename)
+				.toUriString();
+		
+		Imagen imagen = imagenService.save(Imagen.builder()
+				.nombreFichero(filename)
+				.uriDescargaFichero(fileDownloadUri)
+				.tipoFichero(file.getContentType())
+				.tamanyo(file.getSize())
+				.build());
+		
+		CreateProductoDto productoDto = new CreateProductoDto(nombre, descripcion, precio, glucosa, lactosa);
+		Producto producto = service.newProducto(productoDto, oauth, imagen);
+		ProductoDto2 productoDto2 = converter.productoToProductoDto2(producto);
+		return new ResponseEntity<>(productoDto2, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/producto/{id}")
