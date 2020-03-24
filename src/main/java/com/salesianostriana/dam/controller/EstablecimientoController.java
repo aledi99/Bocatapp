@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.controller;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -94,8 +95,10 @@ public class EstablecimientoController {
 
 	
 	@PostMapping("local/")
-	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestBody CreateEstablecimientoDto createEstablecimientoDto) {
+	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") LocalTime horaApertura, @RequestParam("horaCierre") LocalTime horaCierre) {
 		String filename = fileStorageService.storeFile(file);
+		
+		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre);
 		
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 				.path("/downloadFile/")
