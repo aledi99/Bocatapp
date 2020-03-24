@@ -3,8 +3,12 @@ package com.salesianostriana.dam.conversor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 import com.salesianostriana.dam.dto.EstablecimientoDto;
 import com.salesianostriana.dam.dto.ImagenDto;
+
+
+import com.salesianostriana.dam.dto.ListaProductosDto;
 import com.salesianostriana.dam.dto.ProductoDto;
 import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.model.Producto;
@@ -15,6 +19,14 @@ import com.salesianostriana.dam.service.ProductoService;
 @Component
 public class ConversorProducto {
 	
+	/*private static ProductoService productoService;
+	
+	@Autowired
+	public void setServicios(ProductoService productoService) {
+		ConversorProducto.productoService = productoService;
+
+	}*/
+
 	private static ProductoService service;
 	private static EstablecimientoService estService;
 	private static ImagenService imgService;
@@ -40,6 +52,19 @@ public class ConversorProducto {
 				.glucosa(producto.isGluten())
 				.lactosa(producto.isLactosa())
 				.build();
+		
+	}
+	
+	public ListaProductosDto converterListaProductoDto(Producto producto) {
+		
+		
+		return ListaProductosDto.builder()
+				.id(producto.getId())
+				.nombre(producto.getNombre())
+				.precio(String.valueOf(producto.getPrecio()))
+				.build();
+		
+
 		
 	}
 	

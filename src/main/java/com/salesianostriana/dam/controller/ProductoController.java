@@ -7,8 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,15 +24,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.salesianostriana.dam.conversor.ConversorProducto;
 import com.salesianostriana.dam.dto.CreateProductoDto;
 import com.salesianostriana.dam.dto.EditProductoDto;
-import com.salesianostriana.dam.dto.ProductoDto;
 import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.files.FileSystemStorageService;
-import com.salesianostriana.dam.model.Avatar;
-import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Imagen;
 import com.salesianostriana.dam.model.Producto;
-import com.salesianostriana.dam.service.AvatarService;
 import com.salesianostriana.dam.service.EstablecimientoService;
 import com.salesianostriana.dam.service.GerenteService;
 import com.salesianostriana.dam.service.ImagenService;
@@ -52,13 +46,13 @@ public class ProductoController {
 
 	@Autowired
 	private ConversorProducto converter;
-	
+
 	@Autowired
 	private FileSystemStorageService fileStorageService;
 
 	@Autowired
 	private ProductoService service;
-	
+
 	@Autowired
 	private ImagenService imagenService;
 
@@ -67,8 +61,6 @@ public class ProductoController {
 
 	@GetMapping("/local/me/productos/")
 	public ResponseEntity<?> getProductosGerente(OAuth2Authentication oAuth) {
-
-
 
 		String principal = oAuth.getUserAuthentication().getPrincipal().toString();
 
@@ -92,21 +84,18 @@ public class ProductoController {
 	}
 
 	@PostMapping("/producto/")
-	public ResponseEntity<?> newProducto(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("precio") double precio,  @RequestParam("glucosa") boolean glucosa,  @RequestParam("lactosa") boolean lactosa, OAuth2Authentication oauth) {
+	public ResponseEntity<?> newProducto(@RequestParam("file") MultipartFile file,
+			@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion,
+			@RequestParam("precio") double precio, @RequestParam("glucosa") boolean glucosa,
+			@RequestParam("lactosa") boolean lactosa, OAuth2Authentication oauth) {
 		String filename = fileStorageService.storeFile(file);
-		
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/downloadFile/")
-				.path(filename)
-				.toUriString();
-		
-		Imagen imagen = imagenService.save(Imagen.builder()
-				.nombreFichero(filename)
-				.uriDescargaFichero(fileDownloadUri)
-				.tipoFichero(file.getContentType())
-				.tamanyo(file.getSize())
-				.build());
-		
+
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
+				.path(filename).toUriString();
+
+		Imagen imagen = imagenService.save(Imagen.builder().nombreFichero(filename).uriDescargaFichero(fileDownloadUri)
+				.tipoFichero(file.getContentType()).tamanyo(file.getSize()).build());
+
 		CreateProductoDto productoDto = new CreateProductoDto(nombre, descripcion, precio, glucosa, lactosa);
 		Producto producto = service.newProducto(productoDto, oauth, imagen);
 		ProductoDto2 productoDto2 = converter.productoToProductoDto2(producto);

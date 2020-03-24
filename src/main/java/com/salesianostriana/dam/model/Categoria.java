@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.model;
 
+import java.util.Optional;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,5 +25,7 @@ public class Categoria {
 	private Long id;
 	
 	private String nombre;
+
+	
 	
 }

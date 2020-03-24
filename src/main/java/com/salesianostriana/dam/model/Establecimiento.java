@@ -37,6 +37,7 @@ public class Establecimiento {
 	private float valoracion;
 	private LocalTime horaApertura;
 	private LocalTime horaCierre;
+	private boolean fav;
 	
 	@OneToOne
 	private Gerente gerente;

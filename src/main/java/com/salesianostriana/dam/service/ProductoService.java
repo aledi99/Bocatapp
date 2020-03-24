@@ -1,5 +1,11 @@
 package com.salesianostriana.dam.service;
 
+import org.springframework.stereotype.Service;
+
+import com.salesianostriana.dam.model.Producto;
+import com.salesianostriana.dam.repository.EstablecimientoRepository;
+import com.salesianostriana.dam.repository.ProductoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.dto.CategoriaDto;
+import com.salesianostriana.dam.dto.CreateEstablecimientoDto;
 import com.salesianostriana.dam.dto.EstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
 import com.salesianostriana.dam.model.Establecimiento;
@@ -51,6 +52,26 @@ public class ConversorEstablecimiento {
 				.valoracion(establecimiento.getValoracion())
 				.horaApertura(establecimiento.getHoraApertura())
 				.horaCierre(establecimiento.getHoraCierre())
+				.build();
+	}
+
+	public CreateEstablecimientoDto convertEstablecimientotoEstablecimientoDto(Establecimiento establecimiento) {		
+		
+		return CreateEstablecimientoDto.builder()
+				.nombre(establecimiento.getNombre())
+				.presupuesto(establecimiento.getPresupuesto())
+				.descripción(establecimiento.getDescripcion())
+				.build();
+		
+
+		
+	}
+	
+	public Establecimiento convertEstablecimientoDtoToEstablecimiento(CreateEstablecimientoDto createEstablecimientoDto) {
+		return Establecimiento.builder()
+				.nombre(createEstablecimientoDto.getNombre())
+				.presupuesto(createEstablecimientoDto.getPresupuesto())
+				.descripcion(createEstablecimientoDto.getDescripción())
 				.build();
 	}
 
