@@ -18,9 +18,8 @@ import lombok.Setter;
 public class EditEstablecimientoDto {
 	
 	private String nombre,descripcion;
-	private LocalTime horaApertura,horaCierre;
+	private String horaApertura,horaCierre;
 	private Ubicacion localizacion;
 	private Categoria categoria;
-	private Imagen imagen;
 
 }

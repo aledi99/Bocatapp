@@ -26,6 +26,8 @@ import com.salesianostriana.dam.dto.ListaProductosDto;
 import com.salesianostriana.dam.model.Producto;
 import org.springframework.web.server.ResponseStatusException;
 import com.salesianostriana.dam.dto.CreateProductoDto;
+import com.salesianostriana.dam.dto.EditImagenEstablecimientoDto;
+import com.salesianostriana.dam.dto.EditImagenProductoDto;
 import com.salesianostriana.dam.dto.EditProductoDto;
 import com.salesianostriana.dam.dto.ProductoDto;
 import com.salesianostriana.dam.model.Establecimiento;
@@ -116,6 +118,30 @@ public class ProductoController {
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un producto con este id.");
 		}
+	}
+	
+	@PutMapping("producto/{id}/editPhoto")
+	public ResponseEntity<?> editarFotoProducto(@PathVariable Optional<Long> id,@RequestBody EditImagenProductoDto editImagenProductoDto){
+		Long theId = id.orElse(-1L);
+		
+		if(service.findById(theId)!=null) {
+			
+			Producto producto = service.findById(theId);
+			
+			producto.setImagen(editImagenProductoDto.getImagen());
+			
+			service.edit(producto);
+			
+			return new ResponseEntity<>(producto, HttpStatus.CREATED);
+			
+		}else {
+			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un producto con este id.");
+				
+			}
+
+
+		
 	}
 
 

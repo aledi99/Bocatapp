@@ -1,7 +1,12 @@
 package com.salesianostriana.dam.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +18,7 @@ import com.salesianostriana.dam.dto.CreateAdminDto;
 import com.salesianostriana.dam.files.FileSystemStorageService;
 import com.salesianostriana.dam.model.Admin;
 import com.salesianostriana.dam.model.Avatar;
+import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.service.AdminService;
 import com.salesianostriana.dam.service.AvatarService;
 
@@ -50,6 +56,10 @@ public class AdminController {
 		Admin user = adminService.newAdmin(createAdminDto, avatar);
 		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 	}
+	
+
+	
+	
 	
 
 	

@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.OneToOne;
 
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,8 @@ public class Admin extends Usuario {
 
 	@GeneratedValue
 	private long idAdmin;
+	
+	
 
 
 	@Builder

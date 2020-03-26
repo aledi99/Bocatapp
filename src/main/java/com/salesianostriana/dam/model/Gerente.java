@@ -30,6 +30,8 @@ public class Gerente extends Usuario {
 	private boolean validado;
 	private double tlfContacto;
 	
+	
+	
 	@Builder
 	public Gerente(Long id, String nombre, String username, String apellidos, Integer edad, String email,
 			String password, long[] favoritos, Ubicacion localizacion, Avatar avatar, Set<Role> roles,

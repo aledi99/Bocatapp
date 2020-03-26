@@ -23,11 +23,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.salesianostriana.dam.conversor.ConversorEstablecimiento;
 import com.salesianostriana.dam.dto.CreateEstablecimientoDto;
+import com.salesianostriana.dam.dto.CreateLocalizacionDto;
 import com.salesianostriana.dam.dto.EditEstablecimientoDto;
+import com.salesianostriana.dam.dto.EditImagenEstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
 import com.salesianostriana.dam.files.FileSystemStorageService;
 import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Imagen;
+import com.salesianostriana.dam.model.Ubicacion;
 import com.salesianostriana.dam.service.AdminService;
 import com.salesianostriana.dam.service.AvatarService;
 import com.salesianostriana.dam.service.CategoriaService;
@@ -95,10 +98,12 @@ public class EstablecimientoController {
 
 	
 	@PostMapping("local/")
-	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") LocalTime horaApertura, @RequestParam("horaCierre") LocalTime horaCierre) {
+	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre, @RequestParam String latitud , @RequestParam String longitud) {
 		String filename = fileStorageService.storeFile(file);
 		
-		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre);
+		CreateLocalizacionDto createLocalizacionDto = new CreateLocalizacionDto(latitud,longitud);
+		
+		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre,createLocalizacionDto );
 		
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 				.path("/downloadFile/")
@@ -131,7 +136,6 @@ public class EstablecimientoController {
 			establecimiento.setHoraCierre(editestablecimientoDto.getHoraCierre());
 			establecimiento.setLocalizacion(editestablecimientoDto.getLocalizacion());
 			establecimiento.setCategoria(editestablecimientoDto.getCategoria());
-			establecimiento.setImagen(editestablecimientoDto.getImagen());
 			
 			service.edit(establecimiento);
 			
@@ -143,6 +147,30 @@ public class EstablecimientoController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un establecimiento con este id.");
 		}
 		
+		
+	}
+	
+	@PutMapping("local/{id}/editPhoto")
+	public ResponseEntity<?> editarFotoEstablecimiento(@PathVariable Optional<Long> id,@RequestBody EditImagenEstablecimientoDto editImagenEstablecimientoDto){
+		Long theId = id.orElse(-1L);
+		
+		if(service.findById(theId)!=null) {
+			
+			Establecimiento establecimiento = service.findById(theId);
+			
+			establecimiento.setImagen(editImagenEstablecimientoDto.getImagen());
+			
+			service.edit(establecimiento);
+			
+			return new ResponseEntity<>(establecimiento, HttpStatus.CREATED);
+			
+		}else {
+			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un establecimiento con este id.");
+				
+			}
+
+
 		
 	}
 	

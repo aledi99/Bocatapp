@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.dto.CreateGerenteDto;
 import com.salesianostriana.dam.model.Avatar;
+import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Role;
 import com.salesianostriana.dam.repository.GerenteRepository;
@@ -43,6 +46,16 @@ public class GerenteService extends BaseService<Gerente,Long,GerenteRepository> 
 
 			return this.repositorio.save(newGerente);
 		}
+	
+	public List<Gerente> listAllClientes() {
+	
+		List<Gerente> listaDeTodos = new ArrayList<>();		
+		listaDeTodos = repositorio.findAll();
+		
+		
+		return listaDeTodos;
+		
+	}
 
 
 }

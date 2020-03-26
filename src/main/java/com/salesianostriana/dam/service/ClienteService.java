@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,6 +47,7 @@ public class ClienteService extends BaseService<Cliente, Long, ClienteRepository
 
 		return this.repositorio.save(newCliente);
 	}
+	
 
 
 

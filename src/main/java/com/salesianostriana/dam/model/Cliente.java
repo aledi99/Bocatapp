@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.OneToOne;
 
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,9 @@ public class Cliente extends Usuario {
 
 	@GeneratedValue
 	private long idCliente;
-	private boolean validado;	
+	private boolean validado;
+	
+
 
 	
 	
