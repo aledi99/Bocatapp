@@ -36,8 +36,9 @@ public class GerenteController {
 	private final AvatarService avatarService;
 	private final ConversorUsuario converter; 
 	
+	
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestParam("file") MultipartFile file, @RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("edad") int edad, @RequestParam("tlfContacto") double tlfContacto) {
+	public ResponseEntity<?> register(@RequestParam("file") MultipartFile file, @RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("edad") int edad, @RequestParam("tlfContacto") String tlfContacto) {
 		String filename = fileStorageService.storeFile(file);
 		
 		CreateGerenteDto createGerenteDto = new CreateGerenteDto(email, username, password, nombre, apellidos, tlfContacto, edad);
@@ -74,7 +75,7 @@ public class GerenteController {
 		
 	}
 	
-	
+
 
 	
 

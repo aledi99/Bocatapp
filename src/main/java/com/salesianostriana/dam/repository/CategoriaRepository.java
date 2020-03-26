@@ -6,4 +6,5 @@ import com.salesianostriana.dam.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
+	Categoria findByNombre(String nombre);
 }

@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,37 +20,42 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private final ClienteService clienteServicio;
-	private final GerenteService gerenteServicio;
+	@Autowired
+	private ClienteService clienteServicio;
+	
+	@Autowired
+	private GerenteService gerenteServicio;
+	
+	@Autowired
 	private final AdminService adminServicio;
 	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User usuario;
 		
 		if(gerenteServicio.findFirstByEmail(username) != null) {
 			Gerente user = gerenteServicio.findFirstByEmail(username);
 			System.out.println(user);
 			// System.out.println(user);
-//			List<GrantedAuthority> authority = (List<GrantedAuthority>) user.getAuthorities();
-//			//return new User(user.getUsername(), user.getPassword(), authority);
-			return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
-		}
-		
-		if(adminServicio.findFirstByEmail(username) != null) {
+			
+			usuario = new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+
+			return usuario; 
+		} else if(adminServicio.findFirstByEmail(username) != null) {
 			Admin user = adminServicio.findFirstByEmail(username);
 			System.out.println(user);
-			// System.out.println(user);
-//			List<GrantedAuthority> authority = (List<GrantedAuthority>) user.getAuthorities();
-//			//return new User(user.getUsername(), user.getPassword(), authority);
-			return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+			
+			usuario = new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+			
+			return usuario;
+		} else {
+			Cliente user = clienteServicio.findFirstByEmail(username);
+		
+			usuario = new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+		
+			return usuario;
 		}
 
-		Cliente user = clienteServicio.findFirstByEmail(username);
-		System.out.println(user);
-		// System.out.println(user);
-//		List<GrantedAuthority> authority = (List<GrantedAuthority>) user.getAuthorities();
-//		//return new User(user.getUsername(), user.getPassword(), authority);
-		return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
 	}
 }

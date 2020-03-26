@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.salesianostriana.dam.conversor.ConversorCategoria;
 import com.salesianostriana.dam.conversor.ConversorEstablecimiento;
 import com.salesianostriana.dam.dto.CategoriaDto;
+import com.salesianostriana.dam.dto.CategoriaDto2;
 import com.salesianostriana.dam.dto.CategoriaDtoName;
 import com.salesianostriana.dam.dto.CreateCategoriaDto;
 import com.salesianostriana.dam.model.Categoria;
@@ -39,7 +40,7 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	@GetMapping("/categorias/")
+	@GetMapping("/categorias/active")
 	public List<String> listarCatActivas() {
 		List<Establecimiento> locales = new ArrayList<>();
 		List<String> categorias = new ArrayList<>();
@@ -53,6 +54,18 @@ public class CategoriaController {
 		categorias.stream().distinct().collect(Collectors.toList());
 		
 		return categorias;
+	}
+	
+	@GetMapping("/categorias/name")
+	public ResponseEntity<?> getCategoriasName() {
+		List<Categoria> categorias = categoriaService.findAll();
+		List<CategoriaDto2> categoriasName = new ArrayList<>();
+		
+		for(int i = 0; i < categorias.size(); i++) {
+			categoriasName.add(converter.categoriaToCategoriaDto2(categorias.get(i)));
+		}
+		
+		return ResponseEntity.ok().body(categoriasName);
 	}
 	
 	@GetMapping("/categoria/{id}")

@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.controller;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,15 +27,19 @@ import com.salesianostriana.dam.dto.CreateLocalizacionDto;
 import com.salesianostriana.dam.dto.EditEstablecimientoDto;
 import com.salesianostriana.dam.dto.EditImagenEstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
+import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.files.FileSystemStorageService;
 import com.salesianostriana.dam.model.Establecimiento;
+import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Imagen;
 import com.salesianostriana.dam.model.Ubicacion;
 import com.salesianostriana.dam.service.AdminService;
 import com.salesianostriana.dam.service.AvatarService;
 import com.salesianostriana.dam.service.CategoriaService;
 import com.salesianostriana.dam.service.EstablecimientoService;
+import com.salesianostriana.dam.service.GerenteService;
 import com.salesianostriana.dam.service.ImagenService;
+import com.salesianostriana.dam.service.UbicacionService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,10 +53,32 @@ public class EstablecimientoController {
 	private ConversorEstablecimiento converter;	
 	private final FileSystemStorageService fileStorageService;	
 	private final ImagenService imagenService;	
+	private final CategoriaService catService;
+	
+	private final UbicacionService ubService;
+	
+	@Autowired
+	private GerenteService gerService;
+	
+	@GetMapping("/local/me/")
+	public ResponseEntity<?> getProductosGerente(OAuth2Authentication oAuth) {
+		ListaEstablecimientoDto establecimiento;
+		String principal = oAuth.getUserAuthentication().getPrincipal().toString();
+
+		if (gerService.findFirstByEmail(principal) != null) {
+			Gerente gerente = gerService.findFirstByEmail(principal);
+			establecimiento = converter.establecimientoFilterDto(gerente.getEstablecimiento());
+
+			return ResponseEntity.ok().body(establecimiento);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay establecimiento con ese Id.");
+		}
+
+	}
 	
 	
 	@GetMapping("/local/")
-	public List<ListaEstablecimientoDto> buscarLocal() {
+	public ResponseEntity<?> buscarLocal() {
 		List<Establecimiento> locales = service.findAll();
 		List<ListaEstablecimientoDto> localListDto = new ArrayList<>();
 		
@@ -60,15 +86,23 @@ public class EstablecimientoController {
 			localListDto.add(converter.establecimientoFilterDto(e));
 		}
 		
-		return localListDto;
+		return ResponseEntity.ok().body(localListDto);
 		
 	}
 	
 	@GetMapping("/local/{id}")
-	public Establecimiento unEstablecimiento(@PathVariable Optional<Long> id) {
+	public ResponseEntity<?> unEstablecimiento(@PathVariable Optional<Long> id) {
 		Long idd = id.orElse(-1L);
+		ListaEstablecimientoDto estDto;
 		
-		return service.findById(idd);
+		if(service.findById(idd) != null) {
+			Establecimiento establecimiento = service.findById(idd);
+			estDto = converter.establecimientoFilterDto(establecimiento);
+			
+			return ResponseEntity.ok().body(estDto);
+		}
+		
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un establecimiento con este id.");
 	}
 	
 	@PostMapping("/local/{id}")
@@ -98,12 +132,13 @@ public class EstablecimientoController {
 
 	
 	@PostMapping("local/")
-	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre, @RequestParam String latitud , @RequestParam String longitud) {
+	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre, @RequestParam double latitud , @RequestParam double longitud) {
+
 		String filename = fileStorageService.storeFile(file);
 		
 		CreateLocalizacionDto createLocalizacionDto = new CreateLocalizacionDto(latitud,longitud);
 		
-		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre,createLocalizacionDto );
+		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre,createLocalizacionDto);
 		
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 				.path("/downloadFile/")
@@ -128,18 +163,26 @@ public class EstablecimientoController {
 		Long theId = id.orElse(-1L);
 		
 		if(service.findById(theId)!=null) {
+			
 			Establecimiento establecimiento = service.findById(theId);
+			
+			Ubicacion ubicacion = ubService.findById(establecimiento.getLocalizacion().getId());
 			
 			establecimiento.setNombre( editestablecimientoDto.getNombre());
 			establecimiento.setDescripcion(editestablecimientoDto.getDescripcion());
 			establecimiento.setHoraApertura(editestablecimientoDto.getHoraApertura());
+			establecimiento.setAbierto(editestablecimientoDto.isAbierto());
+			establecimiento.setPresupuesto(editestablecimientoDto.getPresupuesto());
 			establecimiento.setHoraCierre(editestablecimientoDto.getHoraCierre());
-			establecimiento.setLocalizacion(editestablecimientoDto.getLocalizacion());
-			establecimiento.setCategoria(editestablecimientoDto.getCategoria());
+			establecimiento.setCategoria(catService.buscarPorNombre(editestablecimientoDto.getNombreCategoria()));
+			
+			ubicacion.setLatitud(editestablecimientoDto.getLatitud());
+			ubicacion.setLongitud(editestablecimientoDto.getLongitud());
 			
 			service.edit(establecimiento);
+			ubService.edit(ubicacion);
 			
-			return new ResponseEntity<>(establecimiento, HttpStatus.CREATED);			 
+			return ResponseEntity.accepted().build();		 
 
 			
 		}else {

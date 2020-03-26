@@ -20,6 +20,6 @@ public class Ubicacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String latitud;
-	private String longitud;
+	private double latitud;
+	private double longitud;
 }
