@@ -1,7 +1,5 @@
 package com.salesianostriana.dam.dto;
 
-import com.salesianostriana.dam.dto.CreateProductoDto.CreateProductoDtoBuilder;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

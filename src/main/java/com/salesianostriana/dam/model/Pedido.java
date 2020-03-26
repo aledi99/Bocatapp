@@ -27,12 +27,11 @@ import lombok.ToString;
 public class Pedido {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private long idEstablecimiento;
-	private LocalTime horaPedido;
-	private LocalDate fechaPedido;
+	private String horaPedido;
+	private String fechaPedido;
 	private double total;
 	private boolean preparado;
 	private boolean entregado;
