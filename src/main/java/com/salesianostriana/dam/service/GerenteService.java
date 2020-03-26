@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.dto.CreateGerenteDto;
 import com.salesianostriana.dam.model.Avatar;
+import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Role;
 import com.salesianostriana.dam.repository.GerenteRepository;
@@ -43,6 +44,10 @@ public class GerenteService extends BaseService<Gerente,Long,GerenteRepository> 
 
 			return this.repositorio.save(newGerente);
 		}
+	
+	public Gerente buscarPorEstablecimiento(Establecimiento e) {
+		return this.repositorio.findByEstablecimiento(e);
+	}
 
 
 }

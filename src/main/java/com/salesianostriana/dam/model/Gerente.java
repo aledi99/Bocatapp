@@ -28,12 +28,12 @@ public class Gerente extends Usuario {
 
 	//private Establecimiento local;
 	private boolean validado;
-	private double tlfContacto;
+	private String tlfContacto;
 	
 	@Builder
 	public Gerente(Long id, String nombre, String username, String apellidos, Integer edad, String email,
 			String password, long[] favoritos, Ubicacion localizacion, Avatar avatar, Set<Role> roles,
-			Date fechaCreacion, LocalDateTime lastPasswordChangedAt, long idGerente, boolean validado, double tlfContacto) {
+			Date fechaCreacion, LocalDateTime lastPasswordChangedAt, long idGerente, boolean validado, String tlfContacto) {
 		super(id, nombre, username, apellidos, edad, email, password, favoritos, localizacion, avatar, roles,
 				fechaCreacion, lastPasswordChangedAt);
 		this.idGerente = idGerente;

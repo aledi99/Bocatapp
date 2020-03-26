@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,16 +58,15 @@ public class FileController {
 	 
 	 @GetMapping("/image/{fileName:.+}")
 	 public ResponseEntity<?> getImage(@PathVariable String fileName) {
-		 Resource resource = fileStorageService.loadFileAsResource(fileName);
-		 String uri = null;
-		 
-		 try {
-			uri = resource.getURI().toString();
+		 File file = null;
+		try {
+			file = fileStorageService.loadFileAsResource(fileName).getFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return ResponseEntity.ok().body(uri);
+		 
+		return ResponseEntity.ok().body(file.getAbsolutePath());
 	 }
 	 
 	 

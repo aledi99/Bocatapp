@@ -29,7 +29,7 @@ public class Cors implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, content-type, accept, access-control-allow-request-method, x-api-key, origin,");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, content-type, acces-control-request-headers, responsetype, accept, access-control-allow-request-method, x-api-key, origin,");
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);

@@ -35,8 +35,8 @@ public class Establecimiento {
 	private double presupuesto;
 	private boolean abierto;
 	private float valoracion;
-	private LocalTime horaApertura;
-	private LocalTime horaCierre;
+	private String horaApertura;
+	private String horaCierre;
 	private boolean fav;
 	
 	@OneToOne

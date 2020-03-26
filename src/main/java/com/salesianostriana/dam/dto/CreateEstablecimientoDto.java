@@ -1,9 +1,5 @@
 package com.salesianostriana.dam.dto;
 
-import java.time.LocalTime;
-
-import com.salesianostriana.dam.dto.ClienteDto.ClienteDtoBuilder;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +14,7 @@ public class CreateEstablecimientoDto {
 	private String nombre;
 	private String descripción;
 	private double presupuesto;
-	private LocalTime horaApertura,horaCierre;
+	private String horaApertura,horaCierre;
 	
 
 
