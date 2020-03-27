@@ -101,6 +101,29 @@ public class ProductoController {
 		ProductoDto2 productoDto2 = converter.productoToProductoDto2(producto);
 		return new ResponseEntity<>(productoDto2, HttpStatus.CREATED);
 	}
+	
+	@GetMapping("/local/{id}/productos")
+	public ResponseEntity<?> getLocalProducts(@PathVariable Optional<Long> id) {
+		Long theId = id.orElse(-1L);
+		
+		if (estService.findById(theId) != null) {
+			List<Producto> productos = estService.findById(theId).getProducto();
+			List<ProductoDto2> productoList = new ArrayList<>();
+
+			if (productos != null) {
+				for (int i = 0; i < productos.size(); i++) {
+					productoList
+							.add(converter.productoToProductoDto2(productos.get(i)));
+
+				}
+			}
+
+			return ResponseEntity.ok().body(productoList);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay establecimiento con ese Id.");
+		}
+
+	}
 
 	@DeleteMapping("/producto/{id}")
 	public ResponseEntity<?> deleteProducto(@PathVariable Optional<Long> id) {
