@@ -1,7 +1,5 @@
 package com.salesianostriana.dam.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -32,7 +30,9 @@ public class Pedido {
 	
 	private String horaPedido;
 	private String fechaPedido;
-	private double total;
+	
+	//variable la cual almacenaba anteriormente el total de un pedido
+	//private double total;
 	
 	@OneToMany
 	private List<Producto> productos;
@@ -52,6 +52,18 @@ public class Pedido {
 	
 	@ManyToOne
 	private Usuario usuario;
+	
+	public double getTotal() {
+		double total = 0;
+		if(!productos.isEmpty()) {
+			for(int i = 0; i < productos.size(); i++) {
+			total = total + productos.get(i).getPrecio();
+		}
+		}
+		
+		return total;
+		
+	}
 	
 
 }
