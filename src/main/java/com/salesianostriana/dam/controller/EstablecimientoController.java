@@ -29,6 +29,7 @@ import com.salesianostriana.dam.dto.EditImagenEstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
 import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.files.FileSystemStorageService;
+import com.salesianostriana.dam.model.Categoria;
 import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Imagen;
@@ -132,7 +133,7 @@ public class EstablecimientoController {
 
 	
 	@PostMapping("local/")
-	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre, @RequestParam double latitud , @RequestParam double longitud) {
+	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre, @RequestParam("latitud") double latitud , @RequestParam("longitud") double longitud,@RequestParam("nombreCategoria") String nombreCategoria, OAuth2Authentication oAuth) {
 
 		String filename = fileStorageService.storeFile(file);
 		
@@ -152,10 +153,38 @@ public class EstablecimientoController {
 											.tamanyo(file.getSize())
 											.build());
 		
-		 
-	
-		Establecimiento e = service.newEstablecimiento(createEstablecimientoDto, imagen);
-		return new ResponseEntity<Establecimiento>(e, HttpStatus.CREATED);
+		Ubicacion ubicacion = ubService.save(Ubicacion.builder()
+				.latitud(latitud)
+				.longitud(longitud)
+				.build());
+		
+		String principal = oAuth.getUserAuthentication().getPrincipal().toString();
+		
+		if (gerService.findFirstByEmail(principal) != null) {
+			Gerente gerente = gerService.findFirstByEmail(principal);
+
+			if (gerente.getEstablecimiento() == null) {	
+				
+				Categoria categoria = catService.buscarPorNombre(nombreCategoria);
+				
+				Establecimiento e = service.newEstablecimiento(createEstablecimientoDto, imagen, ubicacion, gerente, categoria);
+				gerente.setEstablecimiento(e);
+				gerService.edit(gerente);
+				
+				return new ResponseEntity<Establecimiento>(e, HttpStatus.CREATED);	
+				
+			}else {
+				return ResponseEntity.badRequest().build();
+			}
+			
+		} else {
+			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay establecimiento con ese Id.");
+			
+		}
+			
+		
+		 		
 	}
 	
 	@PutMapping("local/{id}")

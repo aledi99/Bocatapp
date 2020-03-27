@@ -56,14 +56,18 @@ public class ConversorEstablecimiento {
 			categoria = catConverter.categoriaToCategoriaDto(catService.findById(establecimiento.getCategoria().getId()));
 		}
 		
+		
+		if(establecimiento.getGerente() != null) {
 		gerente = gerConverter.gerenteToGerenteDto(gerService.buscarPorEstablecimiento(establecimiento));
+
+		}
 		
 		if(establecimiento.getLocalizacion() != null) {
 		ubicacion = ubConverter.ubicacionToUbicacionDto(ubService.findById(establecimiento.getLocalizacion().getId()));
 		}
 		
 		if(establecimiento.getImagen() != null) {
-		imagen = imgConverter.imagenToImagenDto(imgService.findById(establecimiento.getLocalizacion().getId()));
+		imagen = imgConverter.imagenToImagenDto(imgService.findById(establecimiento.getImagen().getId()));
 		}
 		
 		return ListaEstablecimientoDto.builder()

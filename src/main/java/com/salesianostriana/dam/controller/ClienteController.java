@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +25,12 @@ import com.salesianostriana.dam.dto.CreateClienteDto;
 import com.salesianostriana.dam.dto.EditAvatarDto;
 import com.salesianostriana.dam.dto.EditImagenProductoDto;
 import com.salesianostriana.dam.dto.ListUsersDto;
+import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.files.FileSystemStorageService;
 import com.salesianostriana.dam.model.Avatar;
 import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.Establecimiento;
+import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.Usuario;
 import com.salesianostriana.dam.service.AvatarService;
@@ -79,6 +82,29 @@ public class ClienteController {
         
         
     }
+	
+	
+	/*@GetMapping("/me/")
+	public ResponseEntity<?> getDatosCliente(OAuth2Authentication oAuth) {
+
+		String principal = oAuth.getUserAuthentication().getPrincipal().toString();
+
+		if (clienteService.findFirstByEmail(principal) != null) {
+			Cliente cliente = clienteService.findFirstByEmail(principal);
+			
+
+			
+
+			return ResponseEntity.ok().body(productoList);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay establecimiento con ese Id.");
+		}
+
+	}*/
+	
+	
+	
+	
 	
 	@GetMapping("/list")
 	public List<ListUsersDto> listarClientes() {
