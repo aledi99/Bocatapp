@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.salesianostriana.dam.dto.LineaPedidoDto;
 import com.salesianostriana.dam.dto.PedidoDto;
-import com.salesianostriana.dam.model.LineaPedido;
+import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.model.Pedido;
+import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.service.LineaPedidoService;
 import com.salesianostriana.dam.service.PedidoService;
 
@@ -17,25 +17,25 @@ public class ConversorPedido {
 	
 	
 	private static PedidoService service;
-	private static ConversorLineaPedido lpConverter;
+	private static ConversorProducto prodConverter;
 	private static LineaPedidoService lpService;
 	
 	@Autowired
-	public void setServicios(PedidoService service, ConversorLineaPedido lpConverter, LineaPedidoService lpService) {
-		ConversorPedido.lpConverter = lpConverter;
+	public void setServicios(PedidoService service, ConversorProducto lpConverter, LineaPedidoService lpService) {
+		ConversorPedido.prodConverter = lpConverter;
 		ConversorPedido.service = service;
 		ConversorPedido.lpService = lpService;
 	}
 	
 	public PedidoDto pedidoToPedidoDto(Pedido pedido) {
-		List<LineaPedidoDto> listaLineaPedidoDtos = null;
-		List<LineaPedido> listas = null;
+		List<ProductoDto2> listaProducto = null;
+		List<Producto> listas = null;
 		
-		listas = pedido.getLineasPedido();
+		listas = pedido.getProductos();
 		
-		if(pedido.getLineasPedido() != null) {
+		if(pedido.getProductos() != null) {
 			for(int i = 0; i < listas.size(); i++) {
-			listaLineaPedidoDtos.add(lpConverter.lineaPedidoToLineaPedidoDto(listas.get(i)));
+			listaProducto.add(prodConverter.productoToProductoDto2(listas.get(i)));
 		}
 		}
 
@@ -45,7 +45,7 @@ public class ConversorPedido {
 				.fechaPedido(pedido.getFechaPedido())
 				.horaPedido(pedido.getHoraPedido())
 				.total(pedido.getTotal())
-				.lineasPedido(listaLineaPedidoDtos)
+				.lineasPedido(listaProducto)
 				.build();
 	}
 

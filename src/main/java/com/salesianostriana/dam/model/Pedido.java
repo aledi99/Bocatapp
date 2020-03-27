@@ -33,6 +33,10 @@ public class Pedido {
 	private String horaPedido;
 	private String fechaPedido;
 	private double total;
+	
+	@OneToMany
+	private List<Producto> productos;
+	
 	private boolean preparado;
 	private boolean entregado;
 	

@@ -20,6 +20,6 @@ public class PedidoDto {
 	private double total;
 	private boolean preparado;
 	private boolean entregado;
-	private List<LineaPedidoDto> lineasPedido;
+	private List<ProductoDto2> lineasPedido;
 
 }

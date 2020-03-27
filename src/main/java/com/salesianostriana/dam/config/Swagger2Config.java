@@ -19,7 +19,7 @@ public class Swagger2Config {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
             .apis(RequestHandlerSelectors
-                .basePackage("net.guides.springboot2.springboot2swagger2.controller"))
+                .basePackage("com.salesianostriana.dam.controller"))
             .paths(PathSelectors.regex("/.*"))
             .build().apiInfo(apiEndPointsInfo());
     }
