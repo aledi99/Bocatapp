@@ -1,11 +1,15 @@
 package com.salesianostriana.dam.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +21,11 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.salesianostriana.dam.dto.CreateAdminDto;
+import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.files.FileSystemStorageService;
 import com.salesianostriana.dam.model.Admin;
 import com.salesianostriana.dam.model.Avatar;
+import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Role;
 import com.salesianostriana.dam.service.AdminService;
@@ -62,6 +68,33 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 	}
 	
+	
+	/*@GetMapping("/local/me/productos/")
+	public ResponseEntity<?> (OAuth2Authentication oAuth) {
+
+		String principal = oAuth.getUserAuthentication().getPrincipal().toString();
+
+		if (gerService.findFirstByEmail(principal) != null) {
+			Gerente gerente = gerService.findFirstByEmail(principal);
+			List<ProductoDto2> productoList = new ArrayList<>();
+
+			if (gerente.getEstablecimiento().getProducto() != null) {
+				for (int i = 0; i < gerente.getEstablecimiento().getProducto().size(); i++) {
+					productoList
+							.add(converter.productoToProductoDto2(gerente.getEstablecimiento().getProducto().get(i)));
+
+				}
+			}
+
+			return ResponseEntity.ok().body(productoList);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay establecimiento con ese Id.");
+		}
+
+	}*/
+	
+	
+	
 	@GetMapping("/{username}")
 	public ResponseEntity<?> getRole(@PathVariable String username) {
 		String rolAdmin = null;
@@ -79,6 +112,10 @@ public class AdminController {
 		}
 
 	}
+	
+
+	
+	
 	
 
 	

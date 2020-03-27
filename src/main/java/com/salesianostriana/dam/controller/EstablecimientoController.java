@@ -23,14 +23,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.salesianostriana.dam.conversor.ConversorEstablecimiento;
 import com.salesianostriana.dam.dto.CreateEstablecimientoDto;
+import com.salesianostriana.dam.dto.CreateLocalizacionDto;
 import com.salesianostriana.dam.dto.EditEstablecimientoDto;
+import com.salesianostriana.dam.dto.EditImagenEstablecimientoDto;
 import com.salesianostriana.dam.dto.ListaEstablecimientoDto;
 import com.salesianostriana.dam.dto.ProductoDto2;
 import com.salesianostriana.dam.files.FileSystemStorageService;
+import com.salesianostriana.dam.model.Categoria;
 import com.salesianostriana.dam.model.Establecimiento;
 import com.salesianostriana.dam.model.Gerente;
 import com.salesianostriana.dam.model.Imagen;
 import com.salesianostriana.dam.model.Ubicacion;
+import com.salesianostriana.dam.service.AdminService;
+import com.salesianostriana.dam.service.AvatarService;
 import com.salesianostriana.dam.service.CategoriaService;
 import com.salesianostriana.dam.service.EstablecimientoService;
 import com.salesianostriana.dam.service.GerenteService;
@@ -128,10 +133,13 @@ public class EstablecimientoController {
 
 	
 	@PostMapping("local/")
-	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre) {
+	public ResponseEntity<?> nuevoEstablecimiento(@RequestParam("file") MultipartFile file,@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("presupuesto") double presupuesto, @RequestParam("horaApertura") String horaApertura, @RequestParam("horaCierre") String horaCierre, @RequestParam("latitud") double latitud , @RequestParam("longitud") double longitud,@RequestParam("nombreCategoria") String nombreCategoria, OAuth2Authentication oAuth) {
+
 		String filename = fileStorageService.storeFile(file);
 		
-		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre);
+		CreateLocalizacionDto createLocalizacionDto = new CreateLocalizacionDto(latitud,longitud);
+		
+		CreateEstablecimientoDto createEstablecimientoDto = new CreateEstablecimientoDto(nombre,descripcion,presupuesto,horaApertura,horaCierre,createLocalizacionDto);
 		
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 				.path("/downloadFile/")
@@ -145,10 +153,38 @@ public class EstablecimientoController {
 											.tamanyo(file.getSize())
 											.build());
 		
-		 
-	
-		Establecimiento e = service.newEstablecimiento(createEstablecimientoDto, imagen);
-		return new ResponseEntity<Establecimiento>(e, HttpStatus.CREATED);
+		Ubicacion ubicacion = ubService.save(Ubicacion.builder()
+				.latitud(latitud)
+				.longitud(longitud)
+				.build());
+		
+		String principal = oAuth.getUserAuthentication().getPrincipal().toString();
+		
+		if (gerService.findFirstByEmail(principal) != null) {
+			Gerente gerente = gerService.findFirstByEmail(principal);
+
+			if (gerente.getEstablecimiento() == null) {	
+				
+				Categoria categoria = catService.buscarPorNombre(nombreCategoria);
+				
+				Establecimiento e = service.newEstablecimiento(createEstablecimientoDto, imagen, ubicacion, gerente, categoria);
+				gerente.setEstablecimiento(e);
+				gerService.edit(gerente);
+				
+				return new ResponseEntity<Establecimiento>(e, HttpStatus.CREATED);	
+				
+			}else {
+				return ResponseEntity.badRequest().build();
+			}
+			
+		} else {
+			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay establecimiento con ese Id.");
+			
+		}
+			
+		
+		 		
 	}
 	
 	@PutMapping("local/{id}")
@@ -156,6 +192,7 @@ public class EstablecimientoController {
 		Long theId = id.orElse(-1L);
 		
 		if(service.findById(theId)!=null) {
+			
 			Establecimiento establecimiento = service.findById(theId);
 			
 			Ubicacion ubicacion = ubService.findById(establecimiento.getLocalizacion().getId());
@@ -168,7 +205,7 @@ public class EstablecimientoController {
 			establecimiento.setHoraCierre(editestablecimientoDto.getHoraCierre());
 			establecimiento.setCategoria(catService.buscarPorNombre(editestablecimientoDto.getNombreCategoria()));
 			
-			ubicacion.setLatitud(editestablecimientoDto.getLat());
+			ubicacion.setLatitud(editestablecimientoDto.getLatitud());
 			ubicacion.setLongitud(editestablecimientoDto.getLongitud());
 			
 			service.edit(establecimiento);
@@ -182,6 +219,30 @@ public class EstablecimientoController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un establecimiento con este id.");
 		}
 		
+		
+	}
+	
+	@PutMapping("local/{id}/editPhoto")
+	public ResponseEntity<?> editarFotoEstablecimiento(@PathVariable Optional<Long> id,@RequestBody EditImagenEstablecimientoDto editImagenEstablecimientoDto){
+		Long theId = id.orElse(-1L);
+		
+		if(service.findById(theId)!=null) {
+			
+			Establecimiento establecimiento = service.findById(theId);
+			
+			establecimiento.setImagen(editImagenEstablecimientoDto.getImagen());
+			
+			service.edit(establecimiento);
+			
+			return new ResponseEntity<>(establecimiento, HttpStatus.CREATED);
+			
+		}else {
+			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay un establecimiento con este id.");
+				
+			}
+
+
 		
 	}
 	

@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.dto;
 
 import com.salesianostriana.dam.dto.EditProductoDto.EditProductoDtoBuilder;
+import com.salesianostriana.dam.model.Categoria;
+import com.salesianostriana.dam.model.Ubicacion;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +17,13 @@ import lombok.Setter;
 public class EditEstablecimientoDto {
 	
 	private String nombre,descripcion;
-	private double presupuesto;
 	private String horaApertura,horaCierre;
-	private double lat, longitud;
+	private Ubicacion localizacion;
+	private Categoria categoria;
+	private double presupuesto;
+	private double latitud, longitud;
 	private boolean abierto;
 	private String nombreCategoria;
+
 
 }
